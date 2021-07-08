@@ -5,19 +5,20 @@ function randc_benchmark(height, width)
     % where height and width are dimensions of a testing probability matrix.
 
     p = rand(height, width);
-    rng('default')
+    seed = randi(1e6);
+    rng(seed)
 
     % the naive way
     tic
-    s = cumsum(p);
+    s = cumsum(p, 2);
     N = size(p, 1);
     r = rand(N, 1) .* s(:, end);
     for idx = N:-1:1
-        c1(idx) = find(r(idx) < s(idx, :), 1);
+        c1(idx, 1) = find(r(idx) < s(idx, :), 1);
     end
     toc
 
-    rng('default')
+    rng(seed)
     tic
         c2 = randc(p);
     toc
