@@ -20,9 +20,18 @@ function randc_benchmark(height, width)
 
     rng(seed)
     tic
-        c2 = randc(p);
+        S = cumsum(p, 2);
+        [~, c2] = max(rand(size(p, 1), 1) .* S(:, end) < S, [], 2);
+    toc
+    
+    
+    rng(seed)
+    tic
+        c3 = randc(p);
     toc
 
-    if nnz(c1~=c2)
+    c2 = abs(c2 - c1);
+    c3 = abs(c3 - c1);
+    if any(c2 + c3)
         disp('inconsistent results')
     end
