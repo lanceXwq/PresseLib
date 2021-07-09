@@ -17,14 +17,15 @@ function randc_benchmark(height, width)
         c1(idx, 1) = find(r(idx) < s(idx, :), 1);
     end
     toc
-
+    
+    % a way to avoid for loops
     rng(seed)
     tic
         S = cumsum(p, 2);
         [~, c2] = max(rand(size(p, 1), 1) .* S(:, end) < S, [], 2);
     toc
     
-    
+    % (currently best) use the c api
     rng(seed)
     tic
         c3 = randc(p);
